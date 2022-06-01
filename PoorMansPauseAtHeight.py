@@ -142,6 +142,16 @@ class PoorMansPauseAtHeight(Script):
                 return x, y
         return 0, 0
 
+    def playMelody(self):
+        prepend_gcode  = self.putValue(M = 300, S = 1318, P = 240) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 1396, P = 120) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 1567, P = 120) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 2093, P = 720) + "\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 180) + "\n"
+        return prepend_gcode
+
     ##  Inserts the pause commands.
     #   \param data: List of layers.
     #   \return New list of layers.
@@ -316,16 +326,6 @@ class PoorMansPauseAtHeight(Script):
                 if display_text:
                     prepend_gcode += "M117 " + display_text + "\n"
 
-                # Wait for Anycubic i3 Mega
-                # Melody
-                prepend_gcode += self.putValue(M = 300, S = 1318, P = 240) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 1396, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 1567, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 2093, P = 720) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 180) + "\n"
-
                 # Set relative position ON
                 prepend_gcode += self.putValue(G = 91) + " ; switch to relative movement \n"
 
@@ -335,21 +335,16 @@ class PoorMansPauseAtHeight(Script):
                 # Set relative position OFF
                 prepend_gcode += self.putValue(G = 90) + " ; switch back to absolute movement \n"
 
+                # Melody
+                prepend_gcode += self.playMelody()
+
                 # Wating for specified seconds, during this time you must click Pause on-screen,
                 # otherwise the program will automatically resume printing.
                 prepend_gcode += self.putValue(G = 4, S = wait_on_pause_click) + "\n"
 
                 # Now you can change the filament or what-have-you.
                 # To continue printing, click your Continue/resume button on-screen.
-
-                # Melody
-                prepend_gcode += self.putValue(M = 300, S = 1318, P = 240) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 1396, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 1567, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 2093, P = 720) + "\n"
-                prepend_gcode += self.putValue(M = 300, S = 0, P = 180) + "\n"
+                prepend_gcode += self.playMelody()
 
                 if not is_griffin:
                     if control_temperatures:
