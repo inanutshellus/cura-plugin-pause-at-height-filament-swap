@@ -330,7 +330,7 @@ class PoorMansPauseAtHeight(Script):
                 prepend_gcode += self.putValue(G = 91) + "\n"
 
                 # Z axis 15mm up
-                prepend_gcode += self.putValue(G = 91, Z = 15.0) + "\n"
+                prepend_gcode += self.putValue(G = 0, Z = 15.0) + "\n"
 
                 # Wating for 30 seconds, during this time you must click Pause,
                 # otherwise the program will automatically resume printing
