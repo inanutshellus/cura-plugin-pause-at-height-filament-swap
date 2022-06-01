@@ -1,4 +1,5 @@
-# cura-plugin-pause-at-height-filament-swap
+# "Poor Man's" Filament Swap Plugin for Ultimaker Cura
+(... so named because, let's be honest, we all would prefer `M600` worked.)
 
 An [Ultimaker Cura](https://ultimaker.com/software/ultimaker-cura) plugin to pause the printer between layers or at a given height. 
 
