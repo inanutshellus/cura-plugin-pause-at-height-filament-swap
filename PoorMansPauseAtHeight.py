@@ -332,13 +332,15 @@ class PoorMansPauseAtHeight(Script):
                 # Z axis 15mm up
                 prepend_gcode += self.putValue(G = 0, Z = 15.0) + "\n"
 
-                # Wating for 30 seconds, during this time you must click Pause,
-                # otherwise the program will automatically resume printing
+                # Set relative position OFF
+                prepend_gcode += self.putValue(G = 90) + "\n"
+
+                # Wating for specified seconds, during this time you must click Pause on-screen,
+                # otherwise the program will automatically resume printing.
                 prepend_gcode += self.putValue(G = 4, S = wait_on_pause_click) + "\n"
 
-                # After 30 seconds, the head rises by about 2 cm
-                # Now you can change the filament or insert the nut into the object
-                # To continue printing, click the Continue button on screen
+                # Now you can change the filament or what-have-you.
+                # To continue printing, click your Continue/resume button on-screen.
 
                 # Melody
                 prepend_gcode += self.putValue(M = 300, S = 1318, P = 240) + "\n"
