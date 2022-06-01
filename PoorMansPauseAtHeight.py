@@ -312,12 +312,12 @@ class PoorMansPauseAtHeight(Script):
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head up
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter above current z (" + str(current_z) + ") to get the nozzle off of the print\n"
+                    prepend_gcode += self.putValue(G = 0, Z = current_z + 1, F = 300) + " ; move up a millimeter above current z (" + str(current_z) + ") to get the nozzle off of the print\n"
 
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + " ; park nozzle at a safe place so we can purge new filament\n"
+                    prepend_gcode += self.putValue(G = 0, X = park_x, Y = park_y, F = 9000) + " ; park nozzle at a safe place so we can purge new filament\n"
 
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
+                        prepend_gcode += self.putValue(G = 0, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
@@ -366,10 +366,10 @@ class PoorMansPauseAtHeight(Script):
 
                     # Move the head back
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; Move Z near print before moving X,Y\n"
+                        prepend_gcode += self.putValue(G = 0, Z = current_z + 1, F = 300) + " ; Move Z near print before moving X,Y\n"
 
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + " ; return to the original X,Y\n"
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; vertical move back down to original position\n"
+                    prepend_gcode += self.putValue(G = 0, X = x, Y = y, F = 9000) + " ; return to the original X,Y\n"
+                    prepend_gcode += self.putValue(G = 0, Z = current_z, F = 300) + " ; vertical move back down to original position\n"
 
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
