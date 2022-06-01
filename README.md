@@ -1,0 +1,2 @@
+# cura-plugin-pause-at-height-filament-swap
+A plugin for 3D Printing app Cura for printing on printers that do not support M600 (pause and wait). This script is a very, very poor solution compared to M600, but it's all we have. It tells the printer to make a noise at a given height/layer, then "dwell" for a few seconds before continuing. During this "dwelling" period, you can use your printer's on-screen Pause feature to stop between layers.
