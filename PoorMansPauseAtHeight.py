@@ -197,6 +197,7 @@ class PoorMansPauseAtHeight(Script):
                 #Track the latest printing temperature in order to resume at the correct temperature.
                 if line.startswith("T"):
                     current_t = self.getValue(line, "T")
+
                 m = self.getValue(line, "M")
                 if m is not None and (m == 104 or m == 109) and self.getValue(line, "S") is not None:
                     extruder = current_t
@@ -300,11 +301,10 @@ class PoorMansPauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                    # Move the head up
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter above current z (" + str(current_z) + ") to get the nozzle off of the print\n"
 
-                    # This line should be ok
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + " ; park nozzle at a safe place so we can purge new filament\n"
 
                     if current_z < 15:
                         prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
@@ -327,13 +327,13 @@ class PoorMansPauseAtHeight(Script):
                 prepend_gcode += self.putValue(M = 300, S = 0, P = 180) + "\n"
 
                 # Set relative position ON
-                prepend_gcode += self.putValue(G = 91) + "\n"
+                prepend_gcode += self.putValue(G = 91) + " ; switch to relative movement \n"
 
                 # Z axis 15mm up
-                prepend_gcode += self.putValue(G = 0, Z = 15.0) + "\n"
+                prepend_gcode += self.putValue(G = 0, Z = 15.0) + " ; lift the head 15mm above whereever it was to make it easier to clean up extruded filament.\n"
 
                 # Set relative position OFF
-                prepend_gcode += self.putValue(G = 90) + "\n"
+                prepend_gcode += self.putValue(G = 90) + " ; switch back to absolute movement \n"
 
                 # Wating for specified seconds, during this time you must click Pause on-screen,
                 # otherwise the program will automatically resume printing.
@@ -356,24 +356,26 @@ class PoorMansPauseAtHeight(Script):
                         # Set extruder resume temperature
                         prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
-                    # Push the filament back,
+                    # Push the filament back
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + " ; I think this is a bug? It pushes out filament, not retracts. Seems like we could use the retraction BEFORE the pause though, right?\n"
 
                     # Optionally extrude material
                     if extrude_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + " ; extrude the new filament \n"
 
                     # and retract again, the properly primes the nozzle
                     # when changing filament.
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + " ; retract again, this helps prevent spooging while in transit back to the print\n"
 
                     # Move the head back
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; Move Z near print before moving X,Y\n"
+
+                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + " ; return to the original X,Y\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; vertical move back down to original position\n"
+
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -388,9 +390,7 @@ class PoorMansPauseAtHeight(Script):
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
                     prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
-
-                    # reset extrude value to pre pause value
-                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + " ; reset extrusion value to pre-pause value\n"
 
                 layer = prepend_gcode + layer
 
