@@ -330,7 +330,11 @@ class AnycubicI3MegaPauseAtHeight(Script):
                 prepend_gcode += self.putValue(G = 91) + "\n"
 
                 # Z axis 15mm up
-                prepend_gcode += self.putValue(G = 91, Z = 15.0) + "\n"
+#                prepend_gcode += self.putValue(G = 91, Z = 15.0) + "\n" # GGC BUG 1: g91 isn't a move. this should be g=1 or, arguably, g-0. BUG 2: if the nozzle was at <15mm this adds another 15mm. 
+                prepend_gcode += self.putValue(G = 0, Z = 15.0) + "\n" # GGC BUG 1: g91 isn't a move. this should be g=1 or, arguably, g-0. BUG 2: if the nozzle was at <15mm this adds another 15mm. 
+
+                # Set relative position OFF
+                prepend_gcode += self.putValue(G = 90) + "\n" # GGC 
 
                 # Wating for 30 seconds, during this time you must click Pause,
                 # otherwise the program will automatically resume printing
@@ -369,7 +373,7 @@ class AnycubicI3MegaPauseAtHeight(Script):
 
                     # Move the head back
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n" # BUG 3: We are still at absolute positioning! This won't work. It just moves UP more!
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                     prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
                     if retraction_amount != 0:
@@ -385,7 +389,7 @@ class AnycubicI3MegaPauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
+                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n" # GGC - BUG 4 assumes the original e-value was absolute. pretty safe bet i guess.
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
