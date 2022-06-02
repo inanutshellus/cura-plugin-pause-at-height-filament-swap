@@ -12,5 +12,5 @@ Notably this was originally written as "AnycubicI3MegaPauseAtHeight.py" by [juli
 This version just tries to fix a few minor bugs in the previous iterations.
 
 1. The script had an issue that made it unusable if your "Resume" button didn't (accidentally/erroneously) set your positioning to absolute before it exited. In this case, the print nozzle would instead wander to the max X,Y coordinates and jitter and panic there whilst dumping plastic. 
-2. The script had an invalid relative position bug
-3. The script harmlessly used `G1` instead of `G0` (extrude while moving)... so I fixed that.
+2. The script had another invalid relative position bug in which it attempted to move Z but did so using the wrong command.
+3. The script harmlessly used `G1` (move while extruding) instead of `G0` (move)... so I fixed that.
