@@ -55,7 +55,7 @@ class PoorMansPauseAtHeight(Script):
                     "description": "What X location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 0
                 },
                 "head_park_y":
                 {
@@ -63,7 +63,7 @@ class PoorMansPauseAtHeight(Script):
                     "description": "What Y location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 0
                 },
                 "retraction_amount":
                 {
@@ -108,7 +108,7 @@ class PoorMansPauseAtHeight(Script):
                 "standby_temperature":
                 {
                     "label": "Standby Temperature",
-                    "description": "Change the temperature during the pause.",
+                    "description": "Change the temperature during the pause. If you plan on doing a filament swap, this should not be zero.",
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
@@ -116,7 +116,7 @@ class PoorMansPauseAtHeight(Script):
                 "wait_on_pause_click":
                 {
                     "label": "Wait on Pause click",
-                    "description": "How long in seconds the program is waiting for a click Pause. The default value is 10 seconds. After clicking on Pause, the head will rise by about 2 cm and the printer will be on hold. You can then replace the filament or insert the nut into the object. To continue printing, click Continue. If you do not click on Pause in the time that you set here in seconds, the program will automatically continue printing.",
+                    "description": "How long in seconds the program should wait for the usr to click the on-screen 'Pause' button. After clicking on Pause, replace the filament or what-have-you. Then click the on-screen 'Continue' button. If you do not click on Pause in the time that you set here in seconds, the program will automatically continue printing.",
                     "unit": "sec",
                     "type": "int",
                     "default_value": 10
