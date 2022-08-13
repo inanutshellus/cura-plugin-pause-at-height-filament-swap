@@ -14,7 +14,7 @@ class PoorMansPauseAtHeight(Script):
 
     def getSettingDataString(self) -> str:
         return """{
-            "name": "Poor Man's Pause at height",
+            "name": "Poor Man's Pause at height v3",
             "key": "PoorMansPauseAtHeight",
             "metadata": {},
             "version": 2,
@@ -48,6 +48,13 @@ class PoorMansPauseAtHeight(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "pause_at == 'layer_no'"
+                },
+                "play_extended_melody":
+                {
+                    "label": "Play longer melody? (Y/N)",
+                    "description": "If you're in the same room as your printer the short melody is great. If you wander, try the longer song.",
+                    "type": "str",
+                    "default_value": "N"
                 },
                 "head_park_x":
                 {
@@ -142,7 +149,7 @@ class PoorMansPauseAtHeight(Script):
                 return x, y
         return 0, 0
 
-    def playMelody(self):
+    def playShortMelody(self):
         prepend_gcode  = self.putValue(M = 300, S = 1318, P = 240) + "\n"
         prepend_gcode += self.putValue(M = 300, S = 0, P = 120) + "\n"
         prepend_gcode += self.putValue(M = 300, S = 1396, P = 120) + "\n"
@@ -151,6 +158,117 @@ class PoorMansPauseAtHeight(Script):
         prepend_gcode += self.putValue(M = 300, S = 2093, P = 720) + "\n"
         prepend_gcode += self.putValue(M = 300, S = 0, P = 180) + "\n"
         return prepend_gcode
+
+    def playExtendedMelody(self):
+        prepend_gcode  = "; Play a longer melody so it is easier to hear your printer\n"
+        prepend_gcode += "; https://www.thingiverse.com/thing:446853\n"
+        prepend_gcode += "; https://www.youtube.com/watch?v=qjwbaRhCCWA\n"
+        prepend_gcode += "; You_Could_Be_Mine.g\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += "M117 You Could Be Mine\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 330, P = 200) + " ; E4: 330\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 330, P = 200) + " ; E4: 330\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 0, P = 200) + " ; \n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 524, P = 200) + " ; C5: 524\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 800) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += "M117 Finish!!\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += "; Sweet_Child_o_Mine.g\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += "M117 Sweet Child O Mine\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 294, P = 200) + " ; D4: 294\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 294, P = 200) + " ; D4: 294\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 330, P = 200) + " ; E4: 330\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 330, P = 200) + " ; E4: 330\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 588, P = 200) + " ; D5: 588\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 392, P = 200) + " ; G4: 392\n"
+        prepend_gcode += self.putValue(M = 300, S = 784, P = 200) + " ; G5: 784\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += self.putValue(M = 300, S = 740, P = 200) + " ; F#5: 740\n"
+        prepend_gcode += self.putValue(M = 300, S = 440, P = 200) + " ; A4: 440\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += self.putValue(M = 300, S = 294, P = 800) + " ; D4: 294\n"
+        prepend_gcode += "; ------------------------\n"
+        prepend_gcode += "M117 Finish!!\n"
+        prepend_gcode += "; ------------------------\n"
+        return prepend_gcode
+
 
     ##  Inserts the pause commands.
     #   \param data: List of layers.
@@ -173,6 +291,7 @@ class PoorMansPauseAtHeight(Script):
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
+        play_extended_melody = self.getSettingValueByKey("play_extended_melody") == "Y"
 
         is_griffin = False
 
@@ -336,7 +455,10 @@ class PoorMansPauseAtHeight(Script):
                 prepend_gcode += self.putValue(G = 90) + " ; switch back to absolute movement \n"
 
                 # Melody
-                prepend_gcode += self.playMelody()
+                if play_extended_melody:
+                    prepend_gcode += self.playExtendedMelody()
+                else:
+                    prepend_gcode += self.playShortMelody()
 
                 # Wating for specified seconds, during this time you must click Pause on-screen,
                 # otherwise the program will automatically resume printing.
@@ -344,7 +466,7 @@ class PoorMansPauseAtHeight(Script):
 
                 # Now you can change the filament or what-have-you.
                 # To continue printing, click your Continue/resume button on-screen.
-                prepend_gcode += self.playMelody()
+                prepend_gcode += self.playShortMelody()
 
                 if not is_griffin:
                     if control_temperatures:
