@@ -14,10 +14,10 @@ class PoorMansPauseAtHeight(Script):
 
     def getSettingDataString(self) -> str:
         return """{
-            "name": "Poor Man's Pause at height v3",
+            "name": "Poor Man's Pause at height",
             "key": "PoorMansPauseAtHeight",
             "metadata": {},
-            "version": 2,
+            "version": 3,
             "settings":
             {
                 "pause_at":
