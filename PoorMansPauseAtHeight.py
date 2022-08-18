@@ -17,7 +17,7 @@ class PoorMansPauseAtHeight(Script):
             "name": "Poor Man's Pause at height",
             "key": "PoorMansPauseAtHeight",
             "metadata": {},
-            "version": 3,
+            "version": 2,
             "settings":
             {
                 "pause_at":
