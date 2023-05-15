@@ -138,11 +138,20 @@ class PoorMansPauseAtHeight(Script):
             }
         }"""
 
-    ##  Get the X and Y values for a layer (will be used to get X and Y of the
-    #   layer after the pause).
-    def getNextXY(self, layer: str) -> Tuple[float, float]:
+    ##  Get the first X and Y values for a layer
+    def getFirstXY(self, layer: str) -> Tuple[float, float]:
         lines = layer.split("\n")
         for line in lines:
+            if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
+                x = self.getValue(line, "X")
+                y = self.getValue(line, "Y")
+                return x, y
+        return 0, 0
+
+    ##  Get the last X and Y values for a layer
+    def getLastXY(self, layer: str) -> Tuple[float, float]:
+        lines = layer.split("\n")
+        for line in reversed(lines):
             if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
                 x = self.getValue(line, "X")
                 y = self.getValue(line, "Y")
@@ -375,14 +384,13 @@ class PoorMansPauseAtHeight(Script):
                     if current_layer < pause_layer - nbr_negative_layers:
                         continue
 
-                # Get X and Y from the next layer (better position for
-                # the nozzle)
-                next_layer = data[index + 1]
-                x, y = self.getNextXY(next_layer)
-
                 prev_layer = data[index - 1]
                 prev_lines = prev_layer.split("\n")
                 current_e = 0.
+
+                # Get X and Y from the next layer (better position for
+                # the nozzle)
+                x, y = self.getLastXY(prev_layer)
 
                 # Access last layer, browse it backwards to find
                 # last extruder absolute position
@@ -402,7 +410,7 @@ class PoorMansPauseAtHeight(Script):
                     if i == redo_layers:
                         # Get X and Y from the next layer (better position for
                         # the nozzle)
-                        x, y = self.getNextXY(layer)
+                        x, y = self.getFirstXY(layer)
                         prev_lines = prev_layer.split("\n")
                         for lin in prev_lines:
                             new_e = self.getValue(lin, "E", current_e)
