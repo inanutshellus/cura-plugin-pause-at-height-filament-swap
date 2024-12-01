@@ -8,14 +8,14 @@ from UM.Logger import Logger
 
 from typing import List, Tuple
 
-class PoorMansPauseAtHeight(Script):
+class PauseAtHeightOptions(Script):
     def __init__(self) -> None:
         super().__init__()
 
     def getSettingDataString(self) -> str:
         return """{
-            "name": "Poor Man's Pause at height",
-            "key": "PoorMansPauseAtHeight",
+            "name": "Pause at Height with Options",
+            "key": "PauseAtHeightOptions",
             "metadata": {},
             "version": 2,
             "settings":
@@ -412,7 +412,7 @@ class PoorMansPauseAtHeight(Script):
 
                 prepend_gcode = ";TYPE:CUSTOM\n"
                 prepend_gcode += ";added code by post processing\n"
-                prepend_gcode += ";script: PoorMansPauseAtHeight.py\n"
+                prepend_gcode += ";script: PauseAtHeightOptions.py\n"
                 if pause_at == "height":
                     prepend_gcode += ";current z: {z}\n".format(z = current_z)
                     prepend_gcode += ";current height: {height}\n".format(height = current_height)
