@@ -15,6 +15,7 @@ During this "dwelling" period, you can use your printer's on-screen Pause featur
 * Click "Extensions" &gt; "Post Processing" &gt; Modify G-Code
 * The "Post Processing Plugin" dialog appears &gt; Click "Add a script"
 * In the list click "Pause At Height Alternative"
+* From here, each option should have its own documentation (e.g. "pause at a certain height - e.g. 5mm up" or "pause at layer - e.g. pause at layer 25").
 
 # Sources
 
